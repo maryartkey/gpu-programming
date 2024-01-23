@@ -1,5 +1,3 @@
-# gpu-programming
-This repository contains code for a GPU Programming course in NSU
 ## Лабораторная работа 1
 ### Задание
 
