@@ -117,6 +117,7 @@ __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int widt
     }
 }
 
+texture<unsigned char, 1, cudaReadModeElementType> texRef;
 __global__ void blurKernelTexture(unsigned char* out, int width, int height) 
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -139,7 +140,7 @@ __global__ void blurKernelTexture(unsigned char* out, int width, int height)
                 // Check for boundary conditions
                 if (curRow > -1 && curRow < height && curCol > -1 && curCol < width) 
                 {
-                    pixVal += tex1D[curRow * width + curCol];
+                    pixVal += tex1D[texRef, curRow * width + curCol];
                     pixels++;
                 }
             }
