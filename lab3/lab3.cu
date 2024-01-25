@@ -80,6 +80,13 @@ __global__ void blurKernelGlobal(unsigned char* in, unsigned char* out, int widt
 
 __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int width, int height) 
 {
+    __shared__ unsigned char* image[];
+    size_t imageSize = width * height * CHANNELS * sizeof(unsigned char);
+    for (int i = threadIdx.x; i < width; i += blockDim.x){
+        image[i] = in[i];
+    }    
+    __syncthreads();
+    
     int blurSize = 5; // You can adjust the blur size
     int col = blockIdx.x * blockDim.x + threadIdx.x - (2 * blockIdx.x + 1) * blurSize;
     int row = blockIdx.y * blockDim.y + threadIdx.y - (2 * blockIdx.y + 1) * blurSize;
@@ -101,7 +108,7 @@ __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int widt
                 // Check for boundary conditions
                 if (curRow > -1 && curRow < height && curCol > -1 && curCol < width) 
                 {
-                    pixVal += in[curRow * width + curCol];
+                    pixVal += image[curRow * width + curCol];
                     pixels++;
                 }
             }
@@ -110,6 +117,7 @@ __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int widt
     }
 }
 
+texture<unsigned char, 1, cudaReadModeElementType> texRef;
 __global__ void blurKernelTexture(unsigned char* out, int width, int height) 
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -206,7 +214,7 @@ int main()
     int width;
     read_png(filename_in, height, width);
 
-   size_t imageSize = width * height * CHANNELS * sizeof(unsigned char);
+    size_t imageSize = width * height * CHANNELS * sizeof(unsigned char);
     auto *inputImage = new unsigned char[imageSize];
     auto *outputImage = new unsigned char[imageSize]; 
 
