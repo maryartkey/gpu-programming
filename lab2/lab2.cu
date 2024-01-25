@@ -80,8 +80,6 @@ __global__ void blurKernelGlobal(unsigned char* in, unsigned char* out, int widt
 
 __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int width, int height) 
 {
-    __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int width, int height) 
-{
     __shared__ unsigned char* image[];
     size_t imageSize = width * height * CHANNELS * sizeof(unsigned char);
     for (int i = threadIdx.x; i < width; i += blockDim.x){
@@ -119,8 +117,6 @@ __global__ void blurKernelShared(unsigned char* in, unsigned char* out, int widt
     }
 }
 
-}
-
 __global__ void blurKernelTexture(unsigned char* out, int width, int height) 
 {
     int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -143,7 +139,7 @@ __global__ void blurKernelTexture(unsigned char* out, int width, int height)
                 // Check for boundary conditions
                 if (curRow > -1 && curRow < height && curCol > -1 && curCol < width) 
                 {
-                    pixVal += in[curRow * width + curCol];
+                    pixVal += tex1D[curRow * width + curCol];
                     pixels++;
                 }
             }
