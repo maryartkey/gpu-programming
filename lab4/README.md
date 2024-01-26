@@ -22,4 +22,4 @@ Recommendation: before processing apply Sobel filter for edge detection and cons
 3) Выбираем все точки, которые вероятно относятся к выделенным границам (подбираем normalized color value).
 4) Ищем на изображении круги методом наименьших квадратов: берем N раз по K случайных сгенерированных точек, пытаемся строить окружность и оценивать ее, формируем short list и выбираем лучшего из кандидата.
 
-<img src = "https://github.com/maryartkey/gpu-programming/assets/35896507/dfe752c4-1397-4bc0-9302-e33f983ac8f3" width = 100>
+<img src = "https://github.com/maryartkey/gpu-programming/assets/35896507/dfe752c4-1397-4bc0-9302-e33f983ac8f3" width = 300>
