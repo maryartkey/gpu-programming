@@ -161,8 +161,8 @@ void drawCircle(unsigned char* image, int width, int height, int index, int radi
                 if (((radius - 2) * (radius - 2) <= distanceSquared) && (distanceSquared <= radius * radius)) 
                 {
                     int new_index = (i * width + j) * 3;
-                    image[new_index] = 255;
-                    image[new_index + 1] = 255;
+                    image[new_index] = 0;
+                    image[new_index + 1] = 0;
                     image[new_index + 2] = 0;
                 }
             }
